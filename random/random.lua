@@ -36,8 +36,8 @@ function M.table_weighted_draw(list) -- roll an option from a list in a weighted
 	for n in ipairs(list) do
 		choice = list[n]["Option"]
 		if roll <= list[n]["Weight"] then 
-			list[n]["Inventory"] = list[n]["v"] - 1
-			break
+			list[n]["Inventory"] = list[n]["Inventory"] - 1
+			break	
 		end
 		roll = roll - list[n]["Weight"]
 	end
