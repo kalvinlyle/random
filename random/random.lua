@@ -14,6 +14,37 @@ function M.table(list) -- roll an option from a list in a weighted table formatt
 	return choice
 end
 
+function M.table_weighted_draw(list) -- roll an option from a list in a weighted table formatted { Weight = num, Volume = num, Inventory = num, Option = { table } }
+	local range = 0
+	local totalInventory = 0
+
+	for n in ipairs(list) do
+		totalInventory = totalInventory + list[n]["Inventory"]
+	end 
+
+	-- build total range of options for random roll
+	for n in ipairs(list) do
+		if totalInventory == 0 then list[n]["Inventory"] = list[n]["Volume"] end
+		if list[n]["Inventory"] > 0 then range = range + list[n]["Weight"] end
+	end 
+
+	-- roll within total range
+	local roll = math.random(1, range)
+
+	-- find result in options
+	local choice = {}
+	for n in ipairs(list) do
+		choice = list[n]["Option"]
+		if roll <= list[n]["Weight"] then 
+			list[n]["Inventory"] = list[n]["v"] - 1
+			break 
+		end
+		roll = roll - list[n]["Weight"]
+	end
+
+	return list, choice
+end
+
 function M.table_weighted(list) -- roll an option from a list in a weighted table formatted { Weight = num, Option = { table } }
 	local range = 0
 	
