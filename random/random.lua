@@ -34,12 +34,14 @@ function M.table_weighted_draw(list) -- roll an option from a list in a weighted
 	-- find result in options
 	local choice = {}
 	for n in ipairs(list) do
-		choice = list[n]["Option"]
-		if roll <= list[n]["Weight"] then 
-			list[n]["Inventory"] = list[n]["Inventory"] - 1
-			break	
+		if list[n]["Inventory"] > 0 then
+			choice = list[n]["Option"]
+			if roll <= list[n]["Weight"] then 
+				list[n]["Inventory"] = list[n]["Inventory"] - 1
+				break	
+			end
+			roll = roll - list[n]["Weight"]
 		end
-		roll = roll - list[n]["Weight"]
 	end
 
 	return list, choice
